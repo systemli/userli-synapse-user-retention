@@ -16,8 +16,10 @@ func init() {
 	}
 
 	logFormat := os.Getenv("LOG_FORMAT")
-	if logFormat == "" {
-		logFormat = "text"
+	if logFormat == "text" {
+		log.SetFormatter(&log.TextFormatter{})
+	} else {
+		log.SetFormatter(&log.JSONFormatter{})
 	}
 
 	level, err := log.ParseLevel(logLevel)
