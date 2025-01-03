@@ -1,0 +1,7 @@
+---
+services:
+  adapter:
+    image: systemli/userli-synapse-user-retention
+    build: .
+    env_file:
+      - .env
