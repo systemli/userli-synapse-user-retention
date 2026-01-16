@@ -42,11 +42,6 @@ func (s *MainTestSuite) TestMain() {
 			})
 
 		gock.New("http://userli").
-			Get("/api/retention/example.com/users").
-			Reply(200).
-			JSON([]string{})
-
-		gock.New("http://userli").
 			Put("/api/retention/test@example.com/touch").
 			Reply(200)
 

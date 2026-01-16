@@ -3,7 +3,6 @@ package main
 import (
 	"errors"
 	"os"
-	"slices"
 	"strings"
 
 	log "github.com/sirupsen/logrus"
@@ -43,24 +42,13 @@ func main() {
 	}
 	log.WithField("users", len(synapseUsers)).Info("Fetched Synapse users")
 
-	userliDeletedUsers, err := userli.FetchDeletedUsers()
-	if err != nil {
-		log.WithError(err).Fatal("Failed to fetch deleted Userli users")
-	}
-	log.WithField("users", len(userliDeletedUsers)).Info("Fetched deleted Userli users")
-
 	for _, user := range synapseUsers {
 		email := strings.ReplaceAll(user.Name[1:], ":", "@")
-		if slices.Contains(userliDeletedUsers, email) {
-			log.WithField("email", email).Info("Deleting user")
-			// TODO: Delete user from Synapse
-		} else {
-			if user.LastSeen > 0 {
-				log.WithFields(log.Fields{"email": email, "timestamp": user.LastSeen}).Info("Touching user")
-				if err := userli.TouchUser(email, user.LastSeen); err != nil {
-					log.WithError(err).WithField("email", email).Error("Failed to touch user")
-					continue
-				}
+		if user.LastSeen > 0 {
+			log.WithFields(log.Fields{"email": email, "timestamp": user.LastSeen}).Info("Touching user")
+			if err := userli.TouchUser(email, user.LastSeen); err != nil {
+				log.WithError(err).WithField("email", email).Error("Failed to touch user")
+				continue
 			}
 		}
 	}
