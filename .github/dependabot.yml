@@ -6,7 +6,7 @@ updates:
     schedule:
       interval: "monthly"
     groups:
-      adapter:
+      gomod:
         patterns:
           - "*"
 
@@ -14,8 +14,16 @@ updates:
     directory: "/"
     schedule:
       interval: "monthly"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
 
   - package-ecosystem: "docker"
     directory: "/"
     schedule:
       interval: "monthly"
+    groups:
+      docker:
+        patterns:
+          - "*"
